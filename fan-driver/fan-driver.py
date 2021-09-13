@@ -48,8 +48,10 @@ class FanDriver:
         payload = message.payload.decode('utf-8')
         if payload == self.control_enable_command:
             self.turn_fan_on()
+            self.publish_pin_status()
         elif payload == self.control_disable_command:
             self.turn_fan_off()
+            self.publish_pin_status()
         else:
             print('Unknown message:', payload)
             self.publish_status_message(
@@ -57,8 +59,6 @@ class FanDriver:
                 .format(payload,
                         self.control_enable_command,
                         self.control_disable_command))
-
-        self.publish_pin_status()
 
     def turn_fan_on(self):
         self.pi.write(self.gpio_pin, 1)
