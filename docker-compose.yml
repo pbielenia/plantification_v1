@@ -4,6 +4,7 @@ services:
     build: lights-driver
     network_mode: "host"
     privileged: true
+    command: 22 3 18 6
   fan-driver-1:
     build: fan-driver
     network_mode: "host"
