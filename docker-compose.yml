@@ -1,0 +1,21 @@
+version: "3.1"
+services:
+  lights-driver:
+    build: lights-driver
+    network_mode: "host"
+    privileged: true
+  fan-driver-1:
+    build: fan-driver
+    network_mode: "host"
+    privileged: true
+    command: 1 13
+  fan-driver-2:
+    build: fan-driver
+    network_mode: "host"
+    privileged: true
+    command: 2 19
+  fan-driver-3:
+    build: fan-driver
+    network_mode: "host"
+    privileged: true
+    command: 3 26
