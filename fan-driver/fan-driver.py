@@ -1,9 +1,5 @@
 import pigpio
-import datetime
-import time
-import enum
 import sys
-import signal
 import paho.mqtt.client as mqtt
 
 
@@ -79,7 +75,7 @@ class FanDriver:
 if __name__ == "__main__":
 
     if len(sys.argv) != 3:
-        print('Usage: python3 fan-driver.py <fan-name> <gpio-pin>')
+        print('Usage: python3 {} <fan-name> <gpio-pin>'.format(sys.argv[0]))
         exit(1)
 
     fan_name = sys.argv[1]
