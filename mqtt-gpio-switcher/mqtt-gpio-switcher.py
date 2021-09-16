@@ -16,12 +16,14 @@ class MqttGpioSwitcher:
         self._mqtt_client = mqtt.Client()
         self._gpio = pigpio.pi()
 
+    def __del__(self):
+        self._make_cleanup()
+
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        self._turn_pin_off()
-        self._publish_status_message()
+        self._make_cleanup()
 
     def start(self):
         self._init_mqtt_client()
@@ -72,6 +74,10 @@ class MqttGpioSwitcher:
         run = True
         while run:
             self._mqtt_client.loop()
+
+    def _make_cleanup(self):
+        self._turn_pin_off()
+        self._publish_status_message()
 
 
 class ConfigProvider:
