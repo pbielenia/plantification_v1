@@ -21,6 +21,7 @@ class MqttGpioSwitcher:
 
     def __exit__(self, exc_type, exc_value, traceback):
         self._turn_pin_off()
+        self._publish_status_message()
 
     def start(self):
         self._init_mqtt_client()
