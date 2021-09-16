@@ -30,7 +30,8 @@ if __name__ == "__main__":
         humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, dht_pin)
 
         if humidity is not None and temperature is not None:
-            print("Temp={0:0.1f}*C  Humidity={1:0.1f}%".format(temperature, humidity))
+            print(
+                "Temp={0:0.1f}*C  Humidity={1:0.1f}%".format(temperature, humidity))
 
             timestamp = int(time.time())
 

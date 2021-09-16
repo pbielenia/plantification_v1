@@ -52,7 +52,8 @@ if __name__ == "__main__":
             exit(2)
 
     try:
-        config_file_path = os.path.dirname(os.path.abspath(__file__)) + '/../mqtt-gpio-switcher/config.json'
+        config_file_path = os.path.dirname(os.path.abspath(
+            __file__)) + '/../mqtt-gpio-switcher/config.json'
         config_provider = ConfigProvider(sys.argv, config_file_path)
 
         message = None
