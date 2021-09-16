@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
-import paho.mqtt.client as mqtt
+import os
 import json
+import paho.mqtt.client as mqtt
 import sys
 
 
@@ -11,7 +12,7 @@ class ConfigProvider:
         self.device_id = int(console_params[2])
         self.action = console_params[3]
 
-        if self.action != 'on' or self.action != 'off':
+        if self.action != 'on' and self.action != 'off':
             raise Exception('Unknown action: {}'.format(self.action))
 
         config_file = open(file_path, 'r')
@@ -43,7 +44,7 @@ def print_usage():
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        if len(sys.argv == 2) and sys.argv[1] == '--help':
+        if len(sys.argv) == 2 and sys.argv[1] == '--help':
             print_usage()
             exit(0)
         else:
@@ -51,8 +52,8 @@ if __name__ == "__main__":
             exit(2)
 
     try:
-        config_provider = ConfigProvider(
-            sys.argv, 'mqtt-gpio-switcher/config.json')
+        config_file_path = os.path.dirname(os.path.abspath(__file__)) + '/../mqtt-gpio-switcher/config.json'
+        config_provider = ConfigProvider(sys.argv, config_file_path)
 
         message = None
         if config_provider.action == 'on':
@@ -62,7 +63,9 @@ if __name__ == "__main__":
 
         mqtt_client = mqtt.Client()
         mqtt_client.connect('localhost')
-        mqtt_client.publish(config_provider.status_topic, message)
+        mqtt_client.publish(config_provider.control_topic, message)
+
+        exit(0)
 
     except Exception as e:
         print('Something went wrong:\n\t', e)
