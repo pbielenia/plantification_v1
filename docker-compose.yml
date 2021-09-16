@@ -4,12 +4,12 @@ services:
     build: mqtt-gpio-switcher
     network_mode: "host"
     privileged: true
-    command: lamp 1 22
+    command: lamp 17 
   fan-driver-1:
     build: mqtt-gpio-switcher
     network_mode: "host"
     privileged: true
-    command: fan 1 13
+    command: fan 1 26 
   fan-driver-2:
     build: mqtt-gpio-switcher
     network_mode: "host"
@@ -19,4 +19,4 @@ services:
     build: mqtt-gpio-switcher
     network_mode: "host"
     privileged: true
-    command: fan 3 26
+    command: fan 3 13
