@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 
 import Adafruit_DHT
-import json
+import paho.mqtt.client as mqtt
 import sys
 import time
-import paho.mqtt.client as mqtt
 
 if __name__ == "__main__":
     # Intervals of about 2 seconds or less will eventually hang the DHT22.
@@ -26,6 +25,9 @@ if __name__ == "__main__":
     mqtt_client.connect("localhost")
     print("connected.")
 
+    temperature_topic = "plant/sensor/{}/temperature".format(dht_id)
+    humidity_topic = "plant/sensor/{}/humidity".format(dht_id)
+
     while True:
         humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, dht_pin)
 
@@ -33,25 +35,13 @@ if __name__ == "__main__":
             print(
                 "Temp={0:0.1f}*C  Humidity={1:0.1f}%".format(temperature, humidity))
 
-            timestamp = int(time.time())
+            temperature_message = round(temperature, 2)
+            humidity_message = round(humidity, 2)
 
-            temperature_message = dict()
-            temperature_message["temperature"] = round(temperature, 2)
-            temperature_message["timestamp"] = timestamp
-
-            humidity_message = dict()
-            humidity_message["humidity"] = round(humidity, 2)
-            humidity_message["timestamp"] = timestamp
-
-            temperature_topic = "plant/temperature/sensor/{}".format(dht_id)
-            mqtt_client.publish(temperature_topic,
-                                payload=json.dumps(temperature_message))
-
-            temperature_topic = "plant/humidity/sensor/{}".format(dht_id)
-            mqtt_client.publish(temperature_topic,
-                                payload=json.dumps(humidity_message))
+            mqtt_client.publish(temperature_topic, payload=temperature_message)
+            mqtt_client.publish(humidity_topic, payload=humidity_message)
 
         else:
             print("Failed to retrieve data from humidity sensor")
 
-        time.sleep(2)
+        time.sleep(INTERVAL)
