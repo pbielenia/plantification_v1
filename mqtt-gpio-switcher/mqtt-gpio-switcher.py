@@ -46,10 +46,10 @@ class MqttGpioSwitcher:
         payload = message.payload.decode('utf-8').upper()
         if payload == self.control_enable_command:
             self._turn_pin_on()
-            self._publish_pin_status()
+            self._publish_status_message()
         elif payload == self.control_disable_command:
             self._turn_pin_off()
-            self._publish_pin_status()
+            self._publish_status_message()
         else:
             print('Unknown message: {}. Available commands are: {}, {}.'
                   .format(payload,

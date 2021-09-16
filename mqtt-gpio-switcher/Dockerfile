@@ -1,6 +1,6 @@
 FROM arm32v7/python:3.6.12-slim-buster
 
-COPY mqtt-gpio-switcher.py config.json .
+COPY mqtt-gpio-switcher.py config.json ./
 
 RUN apt update && apt install -y \
     build-essential
