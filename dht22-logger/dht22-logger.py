@@ -21,9 +21,13 @@ if __name__ == "__main__":
         dht_id = sys.argv[2]
 
     mqtt_client = mqtt.Client()
-    print("Connecting to the local MQTT broker...", end=' ')
-    mqtt_client.connect("localhost")
-    print("connected.")
+    try:
+        print("Connecting to the local MQTT broker...", end=' ')
+        mqtt_client.connect("localhost")
+        print("connected.")
+    except Exception as e:
+        print("failed:", e)
+        exit(1)
 
     temperature_topic = "plant/sensor/{}/temperature".format(dht_id)
     humidity_topic = "plant/sensor/{}/humidity".format(dht_id)
