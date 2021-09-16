@@ -56,7 +56,15 @@ services:
       - _dht22-logger_build
     network_mode: "host"
     privileged: true
-    command: 6 3
+    command: 6 2
+  
+  dht22-logger-3:
+    image: dht22-logger
+    depends_on:
+      - _dht22-logger_build
+    network_mode: "host"
+    privileged: true
+    command: 0 3
 
   data-collector:
     image: data-collector
