@@ -1,0 +1,4 @@
+{
+    "controlTopic": "plant/<device-type>/<device-id>/control",
+    "statusTopic": "plant/<device-type>/<device-id>/status"
+}

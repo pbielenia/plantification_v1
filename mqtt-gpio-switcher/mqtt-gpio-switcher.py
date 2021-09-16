@@ -1,6 +1,7 @@
-import pigpio
-import sys
 import paho.mqtt.client as mqtt
+import pigpio
+import json
+import sys
 
 
 class MqttGpioSwitcher:
@@ -71,22 +72,53 @@ class MqttGpioSwitcher:
             self._mqtt_client.loop()
 
 
-if __name__ == "__main__":
+class ConfigProvider:
+    def __init__(self, console_params, file_path):
+        self.device_type = console_params[1]
+        self.device_id = int(console_params[2])
+        self.gpio_pin = int(console_params[3])
 
+        config_file = open(file_path, 'r')
+        self._file_params = json.loads(config_file.read())
+
+        self.control_topic = self._get_topic('controlTopic')
+        self.status_topic = self._get_topic('statusTopic')
+
+    def _get_topic(self, json_key):
+        device_type_placeholder = '<device-type>'
+        device_id_placeholder = '<device-id>'
+
+        if json_key in self._file_params:
+            topic_scheme = self._file_params[json_key]
+            if device_type_placeholder in topic_scheme and device_id_placeholder in topic_scheme:
+                return topic_scheme.replace(
+                    device_type_placeholder, self.device_type).replace(device_id_placeholder, str(self.device_id))
+            else:
+                raise Exception('Missing \"{}\" or \"{}\" placeholder in the topic scheme: \"{}\".'.format(
+                    device_type_placeholder, device_id_placeholder, topic_scheme))
+        else:
+            raise Exception(
+                'Key \"{}\" not found in the config file!'.format(json_key))
+
+
+if __name__ == "__main__":
     if len(sys.argv) != 4:
         print('Usage: python3 {} <device-type> <device-id> <gpio-pin>'
               .format(sys.argv[0]))
         exit(1)
 
-    device_type = sys.argv[1]
-    device_id = int(sys.argv[2])
-    gpio_pin = int(sys.argv[3])
+    try:
+        config_provider = ConfigProvider(sys.argv, 'config.json')
 
-    # todo: validate inputs
-    # todo: read topics schemes from json
+        print('Startup parameters:\n'
+              '\tgpio pin:', config_provider.gpio_pin, '\n'
+              '\tcontrol topic:', config_provider.control_topic, '\n'
+              '\tstatus topic:', config_provider.status_topic)
 
-    control_topic = "plant/{}/{}/control".format(device_type, device_id)
-    status_topic = "plant/{}/{}/status".format(device_type, device_id)
+        with MqttGpioSwitcher(config_provider.gpio_pin,
+                              config_provider.control_topic,
+                              config_provider.status_topic) as mqtt_gpio_switcher:
+            mqtt_gpio_switcher.start()
 
-    with MqttGpioSwitcher(gpio_pin, control_topic, status_topic) as mqtt_gpio_switcher:
-        mqtt_gpio_switcher.start()
+    except Exception as e:
+        print('Something went wrong:\n\t', e)
