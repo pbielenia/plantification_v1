@@ -1,6 +1,6 @@
 FROM arm32v7/python:3.6.12-slim-buster
 
-WORKDIR /data_collector
+WORKDIR /data-collector
 
 COPY data_collector.py .
 
