@@ -4,8 +4,8 @@ WORKDIR /data_collector
 
 COPY data_collector.py .
 
-#RUN apt update && apt install -y \
-#    build-essential
+RUN apt update && apt install -y \
+   build-essential
 
 RUN python3 -m pip install --upgrade \
     pip \

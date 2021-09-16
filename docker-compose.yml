@@ -8,7 +8,7 @@ services:
   lights-driver:
     image: mqtt-gpio-switcher
     depends_on:
-        - _mqtt-gpio-switcher_build
+      - _mqtt-gpio-switcher_build
     network_mode: "host"
     privileged: true
     command: lamp 1 17
@@ -16,7 +16,7 @@ services:
   fan-driver-1:
     image: mqtt-gpio-switcher
     depends_on:
-        - _mqtt-gpio-switcher_build
+      - _mqtt-gpio-switcher_build
     network_mode: "host"
     privileged: true
     command: fan 1 13
@@ -24,7 +24,7 @@ services:
   fan-driver-2:
     image: mqtt-gpio-switcher
     depends_on:
-        - _mqtt-gpio-switcher_build
+      - _mqtt-gpio-switcher_build
     network_mode: "host"
     privileged: true
     command: fan 2 19
@@ -32,7 +32,7 @@ services:
   fan-driver-3:
     image: mqtt-gpio-switcher
     depends_on:
-        - _mqtt-gpio-switcher_build
+      - _mqtt-gpio-switcher_build
     network_mode: "host"
     privileged: true
     command: fan 3 26
@@ -57,3 +57,10 @@ services:
     network_mode: "host"
     privileged: true
     command: 6 3
+
+  data-collector:
+    image: data-collector
+    build: data-collector
+    network_mode: "host"
+    volumes:
+      - /tmp/plantification/measures:/data-collector/measures
