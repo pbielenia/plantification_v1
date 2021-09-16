@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 import pigpio
 import json
 import sys
-
+import time
 
 class MqttGpioSwitcher:
     def __init__(self, gpio_pin, control_topic, status_topic):
@@ -64,6 +64,7 @@ class MqttGpioSwitcher:
         self._gpio.write(self.gpio_pin, 0)
 
     def _publish_status_message(self):
+        time.sleep(2)
         message = 'enabled' if self._gpio.read(self.gpio_pin) else 'disabled'
         self._mqtt_client.publish(self.status_topic, message)
 
