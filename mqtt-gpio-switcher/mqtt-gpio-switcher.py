@@ -65,7 +65,7 @@ class MqttGpioSwitcher:
 
     def _publish_status_message(self):
         time.sleep(2)
-        message = 'enabled' if self._gpio.read(self.gpio_pin) else 'disabled'
+        message = 'ENABLED' if self._gpio.read(self.gpio_pin) else 'DISABLED'
         self._mqtt_client.publish(self.status_topic, message)
 
     def _enter_mqtt_loop(self):
