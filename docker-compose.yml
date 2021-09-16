@@ -1,22 +1,38 @@
 version: "3.1"
 services:
+  _mqtt-gpio-switcher_build:
+    image: mqtt-gpio-switcher
+    command: ['echo', 'build completed']
+    build: mqtt-gpio-switcher
+
   lights-driver:
-    build: mqtt-gpio-switcher
+    image: mqtt-gpio-switcher
+    depends_on:
+        - _mqtt-gpio-switcher_build
     network_mode: "host"
     privileged: true
-    command: lamp 17 
+    command: lamp 1 17
+
   fan-driver-1:
-    build: mqtt-gpio-switcher
+    image: mqtt-gpio-switcher
+    depends_on:
+        - _mqtt-gpio-switcher_build
     network_mode: "host"
     privileged: true
-    command: fan 1 26 
+    command: fan 1 13
+
   fan-driver-2:
-    build: mqtt-gpio-switcher
+    image: mqtt-gpio-switcher
+    depends_on:
+        - _mqtt-gpio-switcher_build
     network_mode: "host"
     privileged: true
     command: fan 2 19
+
   fan-driver-3:
-    build: mqtt-gpio-switcher
+    image: mqtt-gpio-switcher
+    depends_on:
+        - _mqtt-gpio-switcher_build
     network_mode: "host"
     privileged: true
-    command: fan 3 13
+    command: fan 3 26
