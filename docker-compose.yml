@@ -36,3 +36,24 @@ services:
     network_mode: "host"
     privileged: true
     command: fan 3 26
+
+  _dht22-logger_build:
+    image: dht22-logger
+    command: ['echo', 'build completed']
+    build: dht22-logger
+
+  dht22-logger-1:
+    image: dht22-logger
+    depends_on:
+      - _dht22-logger_build
+    network_mode: "host"
+    privileged: true
+    command: 5 1
+  
+  dht22-logger-2:
+    image: dht22-logger
+    depends_on:
+      - _dht22-logger_build
+    network_mode: "host"
+    privileged: true
+    command: 6 3
