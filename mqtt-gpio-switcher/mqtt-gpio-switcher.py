@@ -105,7 +105,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 4:
         print('Usage: python3 {} <device-type> <device-id> <gpio-pin>'
               .format(sys.argv[0]))
-        exit(1)
+        exit(2)
 
     try:
         config_provider = ConfigProvider(sys.argv, 'config.json')
@@ -122,3 +122,4 @@ if __name__ == "__main__":
 
     except Exception as e:
         print('Something went wrong:\n\t', e)
+        exit(1)
