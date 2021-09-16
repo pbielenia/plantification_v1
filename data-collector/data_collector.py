@@ -66,7 +66,7 @@ def on_sensor_message(message):
 
     if measured_quantity == 'temperature' or measured_quantity == 'humidity':
         file_path = 'measures/{}.csv'.format(measured_quantity)
-        data = int(message.payload.decode('utf-8'))
+        data = float(message.payload.decode('utf-8'))
     else:
         raise Exception(
             'Unknown measured quantity: {}'.format(measured_quantity))
@@ -91,7 +91,7 @@ def on_device_message(device, message):
 
 def write_to_csv_file(file, device_type, device_id, data):
     with open(file, 'a+', newline='') as csv_file:
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        timestamp = '\"' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '\"'
         data_writer = csv.writer(csv_file, delimiter=',',
                                  quotechar='|', quoting=csv.QUOTE_MINIMAL)
         data_writer.writerow([timestamp, device_type, device_id, data])
