@@ -72,3 +72,5 @@ services:
     network_mode: "host"
     volumes:
       - /tmp/plantification/measures:/data-collector/measures
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
