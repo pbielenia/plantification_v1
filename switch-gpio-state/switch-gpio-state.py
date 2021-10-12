@@ -64,7 +64,8 @@ if __name__ == "__main__":
 
         mqtt_client = mqtt.Client()
         mqtt_client.connect('localhost')
-        mqtt_client.publish(config_provider.control_topic, message)
+        mqtt_client.publish(config_provider.control_topic,
+                            payload=message, retain=True)
 
         exit(0)
 
